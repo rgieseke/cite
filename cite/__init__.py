@@ -10,17 +10,17 @@ del get_versions
 
 parser = argparse.ArgumentParser(description="cite - get citation for DOI.")
 parser.add_argument(
-    "--format",
-    default="text",
-    help='Return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
-)
-parser.add_argument("ids", nargs="+", help="One or more DOIs")
-parser.add_argument(
     "-v",
     "--version",
     action="version",
     version="%(prog)s {version}".format(version=__version__),
 )
+parser.add_argument(
+    "--format",
+    default="text",
+    help='Return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
+)
+parser.add_argument("ids", nargs="+", help="One or more DOIs")
 
 args = parser.parse_args()
 
