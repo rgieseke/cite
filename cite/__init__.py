@@ -16,7 +16,7 @@ parser.add_argument(
 )
 parser.add_argument("ids", nargs="+", help="One or more DOIs")
 parser.add_argument(
-    "-V",
+    "-v",
     "--version",
     action="version",
     version="%(prog)s {version}".format(version=__version__),
