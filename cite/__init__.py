@@ -15,6 +15,12 @@ parser.add_argument(
     help='Return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
 )
 parser.add_argument("ids", nargs="*", help="One or more DOIs")
+parser.add_argument(
+    "-V",
+    "--version",
+    action="version",
+    version="%(prog)s {version}".format(version=__version__),
+)
 
 args = parser.parse_args()
 
