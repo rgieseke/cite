@@ -1,6 +1,7 @@
 # cite
 
-Prints for DOIs.
+Prints citation for DOIs.
+
 ```
 cite https://doi.org/10.1103/PhysRev.48.73 doi:10.1119/1.10927
 ```
