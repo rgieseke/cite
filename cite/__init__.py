@@ -55,10 +55,12 @@ def main():
 
         if doi is None:
             print(item)
+            print()
         else:
             try:
                 result = cn.content_negotiation(doi, format=args.format)
                 print(result)
             except requests.exceptions.HTTPError:
                 print(doi)
-        print()
+                print()
+
