@@ -49,6 +49,11 @@ def _extract_doi(item):
         return doi
 
 
+def _short_doi(doi):
+    r = requests.get("http://shortdoi.org/{}?format=json".format(doi))
+    return r.json()["ShortDOI"]
+
+
 def main():
     for item in args.ids:
         doi = _extract_doi(item)
