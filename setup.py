@@ -34,6 +34,6 @@ setup(
     ],
     packages=["cite"],
     cmdclass=cmdclass,
-    install_requires=["habanero", "requests-html"],
+    install_requires=["habanero", "requests-html", "Unidecode"],
     entry_points={"console_scripts": ["cite=cite:main"]},
 )

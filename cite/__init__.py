@@ -1,7 +1,10 @@
 import argparse
+import json
 import requests
+
 from requests_html import HTMLSession
 from habanero import cn
+from unidecode import unidecode
 
 from ._version import get_versions
 
@@ -20,7 +23,14 @@ parser.add_argument(
 parser.add_argument(
     "--format",
     default="text",
+    required=False,
     help='Return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
+)
+parser.add_argument(
+    "--bibtex",
+    required=False,
+    action="store_true",
+    help='Return bibtex',
 )
 parser.add_argument("ids", nargs="+", help="One or more DOIs")
 
@@ -60,6 +70,14 @@ def main():
 
         if doi is None:
             print(item)
+        elif args.bibtex:
+            result = json.loads(
+                cn.content_negotiation(doi, format="citeproc-json")
+            )
+            name = unidecode(result["author"][0]["family"])
+            shortdoi = _short_doi(doi)[3:]
+            year = result["issued"]["date-parts"][0][0]
+            print("{}_{}_{}".format(name, year, shortdoi))
         else:
             try:
                 result = cn.content_negotiation(doi, format=args.format)
