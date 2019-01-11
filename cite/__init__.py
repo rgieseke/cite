@@ -2,7 +2,7 @@ import argparse
 import json
 import requests
 
-from requests_html import HTMLSession
+from lxml import html
 from habanero import cn
 from unidecode import unidecode
 
@@ -49,12 +49,12 @@ def _extract_doi(item):
         return item[15:]
     else:
         # Try to find the DOI from a Journal's webpage meta data attributes.
-        session = HTMLSession()
-        r = session.get(item)
+        r = requests.get(item)
+        tree = html.fromstring(r.content)
         doi = None
-        for i in r.html.find("meta"):
-            if "name" in i.attrs and i.attrs["name"].lower() in doi_fields:
-                doi = _extract_doi(i.attrs["content"])
+        for i in tree.xpath("//meta"):
+            if "name" in i.attrib and i.attrib["name"].lower() in doi_fields:
+                doi = _extract_doi(i.attrib["content"])
                 break
         return doi
 
