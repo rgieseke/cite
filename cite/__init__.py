@@ -29,9 +29,9 @@ parser.add_argument(
     "--bibtex",
     required=False,
     action="store_true",
-    help='return Bibtex with a shortdoi-based unique Bibtex key',
+    help='return bibtex with a shortdoi-based unique bibtex key',
 )
-parser.add_argument("ids", nargs="+", help="One or more DOIs")
+parser.add_argument("identifier", nargs="?", help="DOI, link or webpage with DOI content")
 
 args = parser.parse_args()
 
@@ -64,30 +64,29 @@ def _short_doi(doi):
 
 
 def main():
-    for item in args.ids:
-        doi = _extract_doi(item)
+    doi = _extract_doi(args.identifier)
 
-        if doi is None:
-            print(item)
-        elif args.bibtex:
-            result = cn.content_negotiation(doi, format="bibtex")
-            bibtex = parse_string(result, "bibtex")
-            try:
-                name = "".join(bibtex.entries.values()[0].persons.values()[0][0].last_names)
-                name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
-                name = unidecode(name)
-                shortdoi = _short_doi(doi)[3:]
-                year = bibtex.entries.values()[0].fields["year"]
-                key = "{}_{}_{}".format(name, year, shortdoi)
-                new = BibliographyData()
-                new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
-                print(new.to_string("bibtex"))
-            except KeyError:
-                print(result)
-        else:
-            try:
-                result = cn.content_negotiation(doi, format=args.format)
-                print(result)
-            except requests.exceptions.HTTPError:
-                print(doi)
-        print()
+    if doi is None:
+        print(item)
+    elif args.bibtex:
+        result = cn.content_negotiation(doi, format="bibtex")
+        bibtex = parse_string(result, "bibtex")
+        try:
+            name = "".join(bibtex.entries.values()[0].persons.values()[0][0].last_names)
+            name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
+            name = unidecode(name)
+            shortdoi = _short_doi(doi)[3:]
+            year = bibtex.entries.values()[0].fields["year"]
+            key = "{}_{}_{}".format(name, year, shortdoi)
+            new = BibliographyData()
+            new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
+            print(new.to_string("bibtex"))
+        except KeyError:
+            print(result)
+    else:
+        try:
+            result = cn.content_negotiation(doi, format=args.format)
+            print(result)
+        except requests.exceptions.HTTPError:
+            print(doi)
+    print()
