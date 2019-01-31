@@ -1,5 +1,7 @@
 # cite
 
+[![PyPI](https://img.shields.io/pypi/v/cite.svg?style=for-the-badge)](https://pypi.org/project/cite/)
+
 Prints citation from DOIs or URLs of journal articles which provide DOIs in their
 metadata.
 
