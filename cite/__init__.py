@@ -64,7 +64,7 @@ def _short_doi(doi):
 
 
 def main():
-    doi = _extract_doi(args.identifier)
+    doi = _extract_doi(args.identifier[0])
 
     if doi is None:
         print(item)
