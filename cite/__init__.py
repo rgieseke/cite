@@ -31,7 +31,7 @@ parser.add_argument(
     action="store_true",
     help='return bibtex with a shortdoi-based unique bibtex key',
 )
-parser.add_argument("identifier", nargs="?", help="DOI, link or webpage with DOI content")
+parser.add_argument("identifier", nargs=1, help="DOI, link or webpage with DOI content")
 
 args = parser.parse_args()
 
