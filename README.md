@@ -9,16 +9,16 @@ $ cite https://doi.org/10.1103/PhysRev.48.73
 Einstein, A., & Rosen, N. (1935). The Particle Problem in the General Theory of Relativity. Physical Review, 48(1), 73–77. doi:10.1103/physrev.48.73
 ```
 
-Other output formats are supported, e.g. for BibTeX
-
-```
-$ cite --format bibtex https://doi.org/10.1103/PhysRev.48.73 doi:10.1002/andp.19053221004
-```
-
-To generate a Bibtex entry with a shortdoi-based unique key use
+To generate a BibTeX entry with a shortdoi-based unique key use
 
 ```
 $ cite --bibtex https://doi.org/10.1103/PhysRev.48.73
+```
+
+Other output formats are supported, e.g. citeproc-json
+
+```
+$ cite --format citeproc-json https://doi.org/10.1103/PhysRev.48.73 doi:10.1002/andp.19053221004
 ```
 
 Where the journals provide the DOI in their website's metadata it is also
