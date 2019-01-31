@@ -34,6 +34,6 @@ setup(
     ],
     packages=["cite"],
     cmdclass=cmdclass,
-    install_requires=["habanero", "requests", "lxml", "Unidecode"],
+    install_requires=["habanero", "requests", "lxml", "Unidecode", "pybtex"],
     entry_points={"console_scripts": ["cite=cite:main"]},
 )

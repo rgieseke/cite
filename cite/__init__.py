@@ -1,11 +1,10 @@
 import argparse
-import json
 import requests
+from pybtex.database import BibliographyData, parse_string
 
 from lxml import html
 from habanero import cn
 from unidecode import unidecode
-
 from ._version import get_versions
 
 __version__ = get_versions()["version"]
@@ -24,13 +23,13 @@ parser.add_argument(
     "--format",
     default="text",
     required=False,
-    help='Return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
+    help='return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
 )
 parser.add_argument(
     "--bibtex",
     required=False,
     action="store_true",
-    help='Return bibtex',
+    help='return Bibtex with a shortdoi-based unique Bibtex key',
 )
 parser.add_argument("ids", nargs="+", help="One or more DOIs")
 
@@ -71,13 +70,20 @@ def main():
         if doi is None:
             print(item)
         elif args.bibtex:
-            result = json.loads(
-                cn.content_negotiation(doi, format="citeproc-json")
-            )
-            name = unidecode(result["author"][0]["family"])
-            shortdoi = _short_doi(doi)[3:]
-            year = result["issued"]["date-parts"][0][0]
-            print("{}_{}_{}".format(name, year, shortdoi))
+            result = cn.content_negotiation(doi, format="bibtex")
+            bibtex = parse_string(result, "bibtex")
+            try:
+                name = "".join(bibtex.entries.values()[0].persons.values()[0][0].last_names)
+                name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
+                name = unidecode(name)
+                shortdoi = _short_doi(doi)[3:]
+                year = bibtex.entries.values()[0].fields["year"]
+                key = "{}_{}_{}".format(name, year, shortdoi)
+                new = BibliographyData()
+                new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
+                print(new.to_string("bibtex"))
+            except KeyError:
+                print(result)
         else:
             try:
                 result = cn.content_negotiation(doi, format=args.format)
