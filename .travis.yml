@@ -1,0 +1,9 @@
+language: python
+
+python:
+  - "3.6"
+
+script:
+  - pip install pip --upgrade
+  - pip install .
+  - cite --help
