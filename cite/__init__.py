@@ -23,7 +23,11 @@ parser.add_argument(
     "--format",
     default="text",
     required=False,
-    help='return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml","bibentry", or "crossref-tdm"',
+    choices=[
+        "text", "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "ris", "bibtex" , "crossref-xml",
+        "datacite-xml", "bibentry", "crossref-tdm",
+    ],
+    help='return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml", "bibentry", or "crossref-tdm"',
 )
 parser.add_argument(
     "--bibtex",
