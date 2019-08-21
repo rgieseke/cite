@@ -1,4 +1,4 @@
-name: Python package
+name: Test
 
 on: [push]
 
@@ -24,4 +24,4 @@ jobs:
     - name: Very basic CLI test
       run: |
         cite --help
-        
+
