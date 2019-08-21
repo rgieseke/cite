@@ -1,7 +1,6 @@
 # cite
 
 [![PyPI](https://img.shields.io/pypi/v/cite.svg?style=for-the-badge)](https://pypi.org/project/cite/)
-[![Travis](https://img.shields.io/travis/rgieseke/cite.svg?style=for-the-badge)](https://travis-ci.org/rgieseke/cite)
 
 ## Installation
 
