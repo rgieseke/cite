@@ -72,7 +72,7 @@ def main():
     doi = _extract_doi(args.identifier[0])
 
     if doi is None:
-        print(item)
+        print(args.identifier[0])
     elif args.bibtex:
         result = cn.content_negotiation(doi, format="bibtex")
         bibtex = parse_string(result, "bibtex")
