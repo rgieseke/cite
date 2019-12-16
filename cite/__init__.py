@@ -1,5 +1,6 @@
 import argparse
 import requests
+import urllib
 from pybtex.database import BibliographyData, parse_string
 
 from lxml import html
@@ -82,6 +83,7 @@ def main():
             shortdoi = _short_doi(doi)[3:]
             year = bibtex.entries.values()[0].fields["year"]
             key = "{}_{}_{}".format(name, year, shortdoi)
+            bibtex.entries.values()[0].fields["url"] = urllib.parse.unquote(bibtex.entries.values()[0].fields["url"])
             new = BibliographyData()
             new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
             print(new.to_string("bibtex"))
