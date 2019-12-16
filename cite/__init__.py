@@ -25,8 +25,17 @@ parser.add_argument(
     default="text",
     required=False,
     choices=[
-        "text", "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "ris", "bibtex" , "crossref-xml",
-        "datacite-xml", "bibentry", "crossref-tdm",
+        "text",
+        "rdf-xml",
+        "turtle",
+        "citeproc-json",
+        "citeproc-json-ish",
+        "ris",
+        "bibtex",
+        "crossref-xml",
+        "datacite-xml",
+        "bibentry",
+        "crossref-tdm",
     ],
     help='return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml", "bibentry", or "crossref-tdm"',
 )
@@ -34,7 +43,7 @@ parser.add_argument(
     "--bibtex",
     required=False,
     action="store_true",
-    help='return bibtex with a shortdoi-based unique bibtex key',
+    help="return bibtex with a shortdoi-based unique bibtex key",
 )
 parser.add_argument("identifier", nargs=1, help="DOI, link or webpage with DOI content")
 
@@ -83,7 +92,9 @@ def main():
             shortdoi = _short_doi(doi)[3:]
             year = bibtex.entries.values()[0].fields["year"]
             key = "{}_{}_{}".format(name, year, shortdoi)
-            bibtex.entries.values()[0].fields["url"] = urllib.parse.unquote(bibtex.entries.values()[0].fields["url"])
+            bibtex.entries.values()[0].fields["url"] = urllib.parse.unquote(
+                bibtex.entries.values()[0].fields["url"]
+            )
             new = BibliographyData()
             new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
             print(new.to_string("bibtex"))
