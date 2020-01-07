@@ -60,6 +60,8 @@ def _extract_doi(item):
         return item[16:]
     elif item.startswith("http://doi.org/"):
         return item[15:]
+    elif item.startswith("doi.org/"):
+        return item[8:]
     else:
         # Try to find the DOI from a Journal's webpage meta data attributes.
         r = requests.get(item)
