@@ -40,6 +40,7 @@ parser.add_argument(
     help='return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml", "bibentry", or "crossref-tdm"',
 )
 parser.add_argument(
+    "-b",
     "--bibtex",
     required=False,
     action="store_true",
