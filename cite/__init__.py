@@ -109,4 +109,3 @@ def main():
             print(result)
         except requests.exceptions.HTTPError:
             print(doi)
-    print()
