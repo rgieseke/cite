@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
     strategy:
@@ -32,3 +32,12 @@ jobs:
     - name: Very basic CLI test
       run: |
         cite --help
+
+  deploy-pypi:
+
+    needs: test
+    steps:
+      - name: Build
+        run: |
+          pip install wheel
+          python setup.py sdist bdist_wheel --universal
