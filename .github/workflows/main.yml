@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Cache pip
+    - name: Use pip cache
       uses: actions/cache@v1
       with:
         path: ~/.cache/pip
@@ -34,10 +34,24 @@ jobs:
         cite --help
 
   deploy-pypi:
-
     needs: test
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Use pip cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
       - name: Build
         run: |
-          pip install wheel
+          python -m pip install --upgrade pip
+          python -m pip install wheel
           python setup.py sdist bdist_wheel --universal
