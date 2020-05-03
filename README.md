@@ -1,6 +1,6 @@
 # cite
 
-[![Test](https://github.com/rgieseke/cite/workflows/Test/badge.svg)](https://github.com/rgieseke/cite/actions)
+[![CI](https://img.shields.io/github/workflow/status/rgieseke/cite/CI?style=for-the-badge)](https://github.com/rgieseke/cite/actions)
 [![PyPI](https://img.shields.io/pypi/v/cite.svg?style=for-the-badge)](https://pypi.org/project/cite/)
 
 ## Installation
