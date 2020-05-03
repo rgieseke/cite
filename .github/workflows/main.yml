@@ -56,3 +56,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install wheel
           python setup.py sdist bdist_wheel --universal
+      - name: Publish package to PyPI
+        # pypi-publish releases:
+        # https://github.com/pypa/gh-action-pypi-publish/releases
+        uses: pypa/gh-action-pypi-publish@37e305e7413032d8422456179fee28fac7d25187
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
