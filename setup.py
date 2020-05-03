@@ -21,7 +21,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     author="Robert Gieseke",
-    author_email="robert.gieseke@pik-potsdam.de",
+    author_email="rob.g@web.de",
     url="https://github.com/rgieseke/cite",
     license="BSD",
     keywords=[],
@@ -34,6 +34,6 @@ setup(
     ],
     packages=["cite"],
     cmdclass=cmdclass,
-    install_requires=["habanero", "requests", "lxml", "Unidecode", "pybtex"],
+    install_requires=["habanero", "requests", "lxml", "python-slugify[unidecode]", "pybtex"],
     entry_points={"console_scripts": ["cite=cite:main"]},
 )

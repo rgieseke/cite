@@ -5,7 +5,7 @@ from pybtex.database import BibliographyData, parse_string
 
 from lxml import html
 from habanero import cn
-from unidecode import unidecode
+from slugify import slugify
 from ._version import get_versions
 
 __version__ = get_versions()["version"]
@@ -91,7 +91,7 @@ def main():
         try:
             name = "".join(bibtex.entries.values()[0].persons.values()[0][0].last_names)
             name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
-            name = unidecode(name)
+            name = slugify(name, lowercase=False, separator="")
             shortdoi = _short_doi(doi)[3:]
             year = bibtex.entries.values()[0].fields["year"]
             key = "{}_{}_{}".format(name, year, shortdoi)
