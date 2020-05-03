@@ -35,6 +35,7 @@ jobs:
 
   deploy-pypi:
     needs: test
+    if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
