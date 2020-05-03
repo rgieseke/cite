@@ -32,6 +32,8 @@ jobs:
     - name: Very basic CLI test
       run: |
         cite --help
+    - name: Pytest
+        pytest tests
 
   deploy-pypi:
     needs: test

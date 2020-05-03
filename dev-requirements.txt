@@ -3,3 +3,4 @@ twine>=1.11.0
 wheel>=0.31.0
 flake8
 black
+pytest
