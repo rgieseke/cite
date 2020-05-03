@@ -20,11 +20,11 @@ jobs:
     - name: Cache pip
       uses: actions/cache@v1
       with:
-      path: ~/.cache/pip
-      key: ${{ runner.os }}-pip-${{ hashFiles('setup.py') }}
-      restore-keys: |
-        ${{ runner.os }}-pip-
-        ${{ runner.os }}-
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          ${{ runner.os }}-
     - name: Installation
       run: |
         python -m pip install --upgrade pip
