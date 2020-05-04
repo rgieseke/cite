@@ -31,9 +31,10 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     packages=["cite"],
     cmdclass=cmdclass,
-    install_requires=["habanero", "requests", "lxml", "python-slugify[unidecode]", "pybtex"],
+    install_requires=["requests", "lxml", "python-slugify[unidecode]", "pybtex"],
     entry_points={"console_scripts": ["cite=cite:main"]},
 )

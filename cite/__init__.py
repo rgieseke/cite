@@ -1,11 +1,12 @@
 import argparse
-import requests
+import sys
 import urllib
-from pybtex.database import BibliographyData, parse_string
 
+import requests
 from lxml import html
-from habanero import cn
+from pybtex.database import BibliographyData, parse_string
 from slugify import slugify
+
 from ._version import get_versions
 
 __version__ = get_versions()["version"]
@@ -21,23 +22,11 @@ parser.add_argument(
     version="%(prog)s {version}".format(version=__version__),
 )
 parser.add_argument(
-    "--format",
-    default="text",
+    "-s",
+    "--style",
+    default="apa",
     required=False,
-    choices=[
-        "text",
-        "rdf-xml",
-        "turtle",
-        "citeproc-json",
-        "citeproc-json-ish",
-        "ris",
-        "bibtex",
-        "crossref-xml",
-        "datacite-xml",
-        "bibentry",
-        "crossref-tdm",
-    ],
-    help='return citation data in specified format: "rdf-xml", "turtle", "citeproc-json", "citeproc-json-ish", "text" (Default), "ris", "bibtex" , "crossref-xml", "datacite-xml", "bibentry", or "crossref-tdm"',
+    help='return text citation specified formatting CSL style',
 )
 parser.add_argument(
     "-b",
@@ -45,6 +34,13 @@ parser.add_argument(
     required=False,
     action="store_true",
     help="return bibtex with a shortdoi-based unique bibtex key",
+)
+parser.add_argument(
+    "-j",
+    "--json",
+    required=False,
+    action="store_true",
+    help="return citeproc-JSON",
 )
 parser.add_argument("identifier", nargs=1, help="DOI, link or webpage with DOI content")
 
@@ -86,8 +82,10 @@ def main():
     if doi is None:
         print(args.identifier[0])
     elif args.bibtex:
-        result = cn.content_negotiation(doi, format="bibtex")
-        bibtex = parse_string(result, "bibtex")
+        headers = {"Accept": "application/x-bibtex"}
+        r = requests.get(f"https://doi.org/{doi}", headers=headers)
+        content = r.content.decode("UTF-8")
+        bibtex = parse_string(content, "bibtex")
         try:
             name = "".join(bibtex.entries.values()[0].persons.values()[0][0].last_names)
             name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
@@ -102,10 +100,19 @@ def main():
             new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
             print(new.to_string("bibtex"))
         except KeyError:
-            print(result)
-    else:
-        try:
-            result = cn.content_negotiation(doi, format=args.format)
-            print(result)
-        except requests.exceptions.HTTPError:
             print(doi)
+            sys.exit(1)
+
+    elif args.json:
+        headers = {'Accept': 'application/vnd.citationstyles.csl+json'}
+        r = requests.get(f"https://doi.org/{doi}", headers=headers)
+        content = r.content.decode("UTF-8")
+        print(content)
+    else:
+        headers = {"Accept": f"text/x-bibliography; style={args.style}"}
+        r = requests.get(f"https://doi.org/{doi}", headers=headers)
+        if r.status_code == 200:
+            print(r.content.decode("UTF-8"))
+        else:
+            print(doi)
+            sys.exit(1)

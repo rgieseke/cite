@@ -20,19 +20,23 @@ $ cite https://doi.org/10.1103/PhysRev.48.73
 Einstein, A., & Rosen, N. (1935). The Particle Problem in the General Theory of Relativity. Physical Review, 48(1), 73–77. doi:10.1103/physrev.48.73
 ```
 
-To generate a BibTeX entry with a shortdoi-based unique key use
+Other output styles formats are supported, see the list of CSL styles ar <https://citation.crosscite.org/>
+
+```
+$ cite --style iso690-author-date-en https://doi.org/10.1103/PhysRev.48.73
+
+EINSTEIN, A. and ROSEN, N., 1935, The Particle Problem in the General Theory of Relativity. Physical Review [online]. 1 July 1935. Vol. 48, no. 1, p. 73–77. DOI 10.1103/physrev.48.73. Available from: http://dx.doi.org/10.1103/PhysRev.48.73
+```
+
+To generate a BibTeX entry with a shortdoi-based unique key use `--bibtex` or `-b`
 
 ```
 $ cite --bibtex https://doi.org/10.1103/PhysRev.48.73
 ```
 
-The entry key is made of name, year and [short DOI](http://shortdoi.org/) of the item.
+The entry's key is made of name, year and [short DOI](http://shortdoi.org/) of the item.
 
-Other output formats are supported, e.g. citeproc-json
-
-```
-$ cite --format citeproc-json https://doi.org/10.1103/PhysRev.48.73 doi:10.1002/andp.19053221004
-```
+To get Citeproc-JSON use `--json` or `-j`.
 
 Where the journals provide the DOI in their website's metadata it is also
 possible to use the article website URL:
@@ -53,5 +57,4 @@ For the full list of options, see
 $ cite --help
 ```
 
-Uses [habanero](https://github.com/sckott/habanero) and
-the Crossref API (https://www.crossref.org/) as well as [Pybtex](https://pybtex.org/).
+Uses Crosscite [DOI Content Negotiation](https://citation.crosscite.org/) as well as [Pybtex](https://pybtex.org/).
