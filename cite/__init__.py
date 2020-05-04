@@ -4,7 +4,6 @@ import urllib
 
 import requests
 from lxml import html
-from pybtex.database import BibliographyData, parse_string
 from slugify import slugify
 
 from ._version import get_versions
@@ -26,7 +25,7 @@ parser.add_argument(
     "--style",
     default="apa",
     required=False,
-    help='return text citation specified formatting CSL style',
+    help="return text citation specified formatting CSL style",
 )
 parser.add_argument(
     "-b",
@@ -36,11 +35,7 @@ parser.add_argument(
     help="return bibtex with a shortdoi-based unique bibtex key",
 )
 parser.add_argument(
-    "-j",
-    "--json",
-    required=False,
-    action="store_true",
-    help="return citeproc-JSON",
+    "-j", "--json", required=False, action="store_true", help="return citeproc-JSON",
 )
 parser.add_argument("identifier", nargs=1, help="DOI, link or webpage with DOI content")
 
@@ -76,6 +71,42 @@ def _short_doi(doi):
     return r.json()["ShortDOI"]
 
 
+def _read_bibtex_entry(line):
+    key, value = line.split(" = ", maxsplit=1)
+    if value[-1] == ",":
+        value = value[:-1]
+    if value[0] == "{" or value[0] == '"':
+        value = value[1:-1]
+    return key, value
+
+
+def _use_short_doi_key(entry):
+    lines = entry.splitlines()
+    kind = lines[0].split("{", maxsplit=1)[0]
+    default_key = lines[0].split("{", maxsplit=1)[1][:-1]
+    year = None
+    name = None
+    shortdoi = None
+    for line in lines[1:]:
+        if "doi =" in line:
+            _, doi = _read_bibtex_entry(line)
+            # Read first author name from JSON version
+            headers = {"Accept": "application/vnd.citationstyles.csl+json"}
+            r = requests.get(f"https://doi.org/{doi}", headers=headers)
+            data = r.json()
+            name = data["author"][0]["family"]
+            name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
+            name = slugify(name, lowercase=False, separator="")
+            # 'issued': {'date-parts': [[2016, ...
+            year = data["issued"]["date-parts"][0][0]
+            shortdoi = _short_doi(doi)[3:]
+            break
+    if year and name and shortdoi:
+        return f"{kind}{{{name}_{year}_{shortdoi},\n" + "\n".join(lines[1:]) + "\n"
+    else:
+        return entry
+
+
 def main():
     doi = _extract_doi(args.identifier[0])
 
@@ -85,26 +116,9 @@ def main():
         headers = {"Accept": "application/x-bibtex"}
         r = requests.get(f"https://doi.org/{doi}", headers=headers)
         content = r.content.decode("UTF-8")
-        bibtex = parse_string(content, "bibtex")
-        try:
-            name = "".join(bibtex.entries.values()[0].persons.values()[0][0].last_names)
-            name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
-            name = slugify(name, lowercase=False, separator="")
-            shortdoi = _short_doi(doi)[3:]
-            year = bibtex.entries.values()[0].fields["year"]
-            key = "{}_{}_{}".format(name, year, shortdoi)
-            bibtex.entries.values()[0].fields["url"] = urllib.parse.unquote(
-                bibtex.entries.values()[0].fields["url"]
-            )
-            new = BibliographyData()
-            new.add_entry(key, bibtex.entries[bibtex.entries.keys()[0]])
-            print(new.to_string("bibtex"))
-        except KeyError:
-            print(doi)
-            sys.exit(1)
-
+        print(_use_short_doi_key(content))
     elif args.json:
-        headers = {'Accept': 'application/vnd.citationstyles.csl+json'}
+        headers = {"Accept": "application/vnd.citationstyles.csl+json"}
         r = requests.get(f"https://doi.org/{doi}", headers=headers)
         content = r.content.decode("UTF-8")
         print(content)

@@ -57,4 +57,4 @@ For the full list of options, see
 $ cite --help
 ```
 
-Uses Crosscite [DOI Content Negotiation](https://citation.crosscite.org/) as well as [Pybtex](https://pybtex.org/).
+Uses Crosscite [DOI Content Negotiation](https://citation.crosscite.org/).

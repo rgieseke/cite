@@ -35,6 +35,6 @@ setup(
     ],
     packages=["cite"],
     cmdclass=cmdclass,
-    install_requires=["requests", "lxml", "python-slugify[unidecode]", "pybtex"],
+    install_requires=["requests", "python-slugify[unidecode]"],
     entry_points={"console_scripts": ["cite=cite:main"]},
 )
