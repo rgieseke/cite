@@ -1,6 +1,5 @@
 import argparse
 import sys
-import urllib
 
 import requests
 from lxml import html
@@ -83,7 +82,6 @@ def _read_bibtex_entry(line):
 def _use_short_doi_key(entry):
     lines = entry.splitlines()
     kind = lines[0].split("{", maxsplit=1)[0]
-    default_key = lines[0].split("{", maxsplit=1)[1][:-1]
     year = None
     name = None
     shortdoi = None
