@@ -2,6 +2,7 @@
 
 [![CI](https://img.shields.io/github/workflow/status/rgieseke/cite/CI?style=for-the-badge&label=actions&logo=github&logoColor=white)](https://github.com/rgieseke/cite/actions)
 [![PyPI](https://img.shields.io/pypi/v/cite.svg?style=for-the-badge)](https://pypi.org/project/cite/)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/cite.svg?style=for-the-badge)](https://anaconda.org/conda-forge/cite)
 
 ## Installation
 
