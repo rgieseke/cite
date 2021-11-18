@@ -34,7 +34,11 @@ parser.add_argument(
     help="return bibtex with a shortdoi-based unique bibtex key",
 )
 parser.add_argument(
-    "-j", "--json", required=False, action="store_true", help="return citeproc-JSON",
+    "-j",
+    "--json",
+    required=False,
+    action="store_true",
+    help="return citeproc-JSON",
 )
 parser.add_argument("identifier", nargs=1, help="DOI, link or webpage with DOI content")
 
