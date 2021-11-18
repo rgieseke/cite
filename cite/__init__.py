@@ -10,7 +10,7 @@ from ._version import get_versions
 __version__ = get_versions()["version"]
 del get_versions
 
-doi_fields = ["doi", "citation_doi", "prism.doi", "dc.identifier"]
+doi_fields = ["doi", "citation_doi", "prism.doi", "dc.identifier.doi"]
 
 parser = argparse.ArgumentParser(description="cite - get citation for DOI.")
 parser.add_argument(
